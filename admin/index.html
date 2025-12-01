@@ -9,7 +9,7 @@
 <body>
 <div class="container">
   <header>
-    <h2>Waste Not Kitchen — Admin</h2>
+    <h2>Waste Not Kitchen — Admin Panel</h2>
     <span id="adminBadge" class="badge">Checking session…</span>
   </header>
   <nav>
@@ -34,7 +34,7 @@
       </select>
       <button type="submit">Search</button>
     </form>
-    <div id="membersResult" class="card"></div>
+    <div id="membersResult" class="card"><div class="alert info">Run a search to see members.</div></div>
   </section>
 
   <section id="pane-restaurant" class="card" hidden>
@@ -44,7 +44,7 @@
       <label>Restaurant MID <input type="number" name="mid"/></label>
       <button type="submit">Run</button>
     </form>
-    <div id="restaurantResult" class="card"></div>
+    <div id="restaurantResult" class="card"><div class="alert info">Enter a restaurant MID and year, then Run.</div></div>
   </section>
 
   <section id="pane-purchases" class="card" hidden>
@@ -54,7 +54,7 @@
       <label>Member MID <input type="number" name="mid"/></label>
       <button type="submit">Run</button>
     </form>
-    <div id="purchasesResult" class="card"></div>
+    <div id="purchasesResult" class="card"><div class="alert info">Provide a member MID (customer or donor) and year.</div></div>
   </section>
 
   <section id="pane-needy" class="card" hidden>
@@ -64,7 +64,7 @@
       <label>Needy MID <input type="number" name="mid"/></label>
       <button type="submit">Run</button>
     </form>
-    <div id="needyResult" class="card"></div>
+    <div id="needyResult" class="card"><div class="alert info">Enter a needy member MID and year to view totals.</div></div>
   </section>
 
   <section id="pane-donor_tax" class="card" hidden>
@@ -74,7 +74,7 @@
       <label>Donor MID <input type="number" name="mid"/></label>
       <button type="submit">Run</button>
     </form>
-    <div id="donorTaxResult" class="card"></div>
+    <div id="donorTaxResult" class="card"><div class="alert info">Enter a donor MID and year to see donation summary.</div></div>
   </section>
 </div>
 <script src="admin.js"></script>

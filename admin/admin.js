@@ -21,10 +21,18 @@
       badge.textContent = `Admin MID ${j.mid}`;
     } else {
       badge.textContent = 'Forbidden: admin login required';
-      document.body.innerHTML += '<div class="alert error">Please log in as admin to use this page.</div>';
+      const prompt = document.createElement('div');
+      prompt.className = 'alert error';
+      prompt.innerHTML = 'Please log in as admin to use this page. ' +
+        '<a class="button" style="margin-left:8px" href="/index.html">Go to Login</a>';
+      document.body.appendChild(prompt);
     }
   }).catch(()=>{
     badge.textContent = 'Session check failed';
+    const prompt = document.createElement('div');
+    prompt.className = 'alert error';
+    prompt.innerHTML = 'Session check failed. <a class="button" style="margin-left:8px" href="/index.html">Go to Login</a>';
+    document.body.appendChild(prompt);
   });
 
   // Helpers
