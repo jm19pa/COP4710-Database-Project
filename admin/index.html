@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>WNK Admin</title>
+  <link rel="stylesheet" href="admin.css"/>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h2>Waste Not Kitchen — Admin</h2>
+    <span id="adminBadge" class="badge">Checking session…</span>
+  </header>
+  <nav>
+    <a href="#members" data-tab="members" class="active">Members</a>
+    <a href="#restaurant" data-tab="restaurant">Restaurant Activity</a>
+    <a href="#purchases" data-tab="purchases">Customer/Donor Purchases</a>
+    <a href="#needy" data-tab="needy">Needy Pickups</a>
+    <a href="#donor_tax" data-tab="donor_tax">Donor Tax Report</a>
+  </nav>
+
+  <section id="pane-members" class="card">
+    <h3>Member Lookup</h3>
+    <form id="formMembers" class="inline">
+      <input type="text" name="q" placeholder="username or email" />
+      <select name="type">
+        <option value="">Any type</option>
+        <option>admin</option>
+        <option>restaurant</option>
+        <option>customer</option>
+        <option>donor</option>
+        <option>needy</option>
+      </select>
+      <button type="submit">Search</button>
+    </form>
+    <div id="membersResult" class="card"></div>
+  </section>
+
+  <section id="pane-restaurant" class="card" hidden>
+    <h3>Restaurant Annual Activity</h3>
+    <form id="formRestaurant" class="inline">
+      <label>Year <input type="number" name="year" min="2000" max="2100"/></label>
+      <label>Restaurant MID <input type="number" name="mid"/></label>
+      <button type="submit">Run</button>
+    </form>
+    <div id="restaurantResult" class="card"></div>
+  </section>
+
+  <section id="pane-purchases" class="card" hidden>
+    <h3>Annual Purchase Report (Customer or Donor)</h3>
+    <form id="formPurchases" class="inline">
+      <label>Year <input type="number" name="year" min="2000" max="2100"/></label>
+      <label>Member MID <input type="number" name="mid"/></label>
+      <button type="submit">Run</button>
+    </form>
+    <div id="purchasesResult" class="card"></div>
+  </section>
+
+  <section id="pane-needy" class="card" hidden>
+    <h3>Annual Free Plates Received (Needy)</h3>
+    <form id="formNeedy" class="inline">
+      <label>Year <input type="number" name="year" min="2000" max="2100"/></label>
+      <label>Needy MID <input type="number" name="mid"/></label>
+      <button type="submit">Run</button>
+    </form>
+    <div id="needyResult" class="card"></div>
+  </section>
+
+  <section id="pane-donor_tax" class="card" hidden>
+    <h3>Year-End Donation Report (Donor)</h3>
+    <form id="formDonorTax" class="inline">
+      <label>Year <input type="number" name="year" min="2000" max="2100"/></label>
+      <label>Donor MID <input type="number" name="mid"/></label>
+      <button type="submit">Run</button>
+    </form>
+    <div id="donorTaxResult" class="card"></div>
+  </section>
+</div>
+<script src="admin.js"></script>
+</body>
+</html>
