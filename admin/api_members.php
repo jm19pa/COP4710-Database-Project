@@ -17,13 +17,13 @@ if ($type !== '' && !in_array($type, $memberTypes, true)) {
 }
 $rows = [];
 if ($type !== '' && $q !== '') {
-    $stmt = $pdo->prepare('SELECT mid,username,email,user_type,named,phone FROM Members WHERE user_type=? AND (username LIKE ? OR email LIKE ?) ORDER BY username LIMIT 200');
+    $stmt = $pdo->prepare('SELECT mid,username,email,m_type AS user_type,named,phone FROM Members WHERE m_type=? AND (username LIKE ? OR email LIKE ?) ORDER BY username LIMIT 200');
     $like = "%$q%"; $stmt->execute([$type, $like, $like]);
 } elseif ($type !== '') {
-    $stmt = $pdo->prepare('SELECT mid,username,email,user_type,named,phone FROM Members WHERE user_type=? ORDER BY username LIMIT 200');
+    $stmt = $pdo->prepare('SELECT mid,username,email,m_type AS user_type,named,phone FROM Members WHERE m_type=? ORDER BY username LIMIT 200');
     $stmt->execute([$type]);
 } else {
-    $stmt = $pdo->prepare('SELECT mid,username,email,user_type,named,phone FROM Members WHERE username LIKE ? OR email LIKE ? ORDER BY username LIMIT 200');
+    $stmt = $pdo->prepare('SELECT mid,username,email,m_type AS user_type,named,phone FROM Members WHERE username LIKE ? OR email LIKE ? ORDER BY username LIMIT 200');
     $like = "%$q%"; $stmt->execute([$like, $like]);
 }
 $rows = $stmt->fetchAll();
