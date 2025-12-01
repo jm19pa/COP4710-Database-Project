@@ -211,7 +211,7 @@ BEGIN
     SELECT SUM(R.quantity) INTO total_reserved FROM Reserved R WHERE R.mid = mid;
     SELECT SUM(P.quantity) INTO total_picked_up FROM Picked_Up P WHERE P.mid = mid;
     IF (total_reserved + total_picked_up) <= 1 THEN
-        SIGNAL SQLSTATE '00000' SET MESSAGE_TEXT = 'Still Needy!';
+        SIGNAL SQLSTATE '01000' SET MESSAGE_TEXT = 'Still Needy!';
         RETURN TRUE;
 	ELSE
 		SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Not Needy!';
