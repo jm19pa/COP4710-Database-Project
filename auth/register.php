@@ -44,7 +44,7 @@ if ($row) {
 
 $hash = password_hash($password, PASSWORD_DEFAULT);
 
-$ins = $pdo->prepare('INSERT INTO Members (username,email,pwd,user_type,named,phone) VALUES (?,?,?,?,?,?)');
+$ins = $pdo->prepare('INSERT INTO Members (username,email,pwd,m_type,named,phone) VALUES (?,?,?,?,?,?)');
 $ok = $ins->execute([$username, $email, $hash, $user_type, $name, $phone]);
 if (!$ok) {
     json_response(500, ['status' => 'error', 'error' => 'Insert failed']);

@@ -22,7 +22,7 @@ if (!$identifier || !$password) {
 
 // Use PDO connection from db.php ($pdo)
 $stmt = $pdo->prepare(
-    'SELECT mid, username, email, pwd, user_type
+    'SELECT mid, username, email, pwd, m_type AS user_type
      FROM Members
      WHERE username = ? OR email = ?
      LIMIT 1'
