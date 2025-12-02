@@ -1,10 +1,8 @@
 <?php
 // restaurant_create_plate.php
-require_once __DIR__ . '/db.php';
-require_once __DIR__ . '/util/auth_utils.php';
-
 session_start();
-header('Content-Type: application/json');
+require_once '../db.php';    
+require_once '../auth_utils.php';
 
 
 if (empty($_SESSION['mid']) || ($_SESSION['user_type'] ?? '') !== 'restaurant') {
@@ -13,57 +11,61 @@ if (empty($_SESSION['mid']) || ($_SESSION['user_type'] ?? '') !== 'restaurant') 
     exit;
 }
 
-require_post();
-$data = read_input();
+$mid = (int)$_SESSION['mid'];
 
-$mid        = (int)$_SESSION['mid'];
-$named      = sanitize_string($data['named'] ?? null);
-$plate_type = sanitize_string($data['plate_type'] ?? null);
-$price      = isset($data['price']) ? floatval($data['price']) : null;
-$quantity   = isset($data['quantity']) ? intval($data['quantity']) : null;
-$described  = sanitize_string($data['described'] ?? null);
 
-$errors = [];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $named       = trim($_POST['named'] ?? '');
+    $plate_type  = trim($_POST['plate_type'] ?? '');
+    $price       = $_POST['price'] ?? null;
+    $quantity    = $_POST['quantity'] ?? null;
+    $described   = trim($_POST['described'] ?? '');
+    $starts_at   = $_POST['starts_at'] ?? '';
+    $ends_at     = $_POST['ends_at'] ?? '';
 
-if (!$named)          $errors['named']       = 'Plate name required';
-if (!$plate_type)     $errors['plate_type']  = 'Plate type required';
-if ($price === null || $price < 0) $errors['price'] = 'Price must be >= 0';
-if ($quantity === null || $quantity <= 0) $errors['quantity'] = 'Quantity must be > 0';
-if (!$described)      $errors['described']   = 'Description required';
-
-if ($errors) {
-    http_response_code(422);
-    echo json_encode(['status' => 'error', 'errors' => $errors]);
-    exit;
-}
-
-try {
-    $pdo->beginTransaction();
-
-    $insertPlate = $pdo->prepare('
-        INSERT INTO Plates (mid, price, named, plate_type, described)
-        VALUES (?, ?, ?, ?, ?)
-    ');
-    $insertPlate->execute([$mid, $price, $named, $plate_type, $described]);
-    $pid = (int)$pdo->lastInsertId();
-
-    $insertSale = $pdo->prepare('
-        INSERT INTO On_Sale (pid, quantity)
-        VALUES (?, ?)
-    ');
-    $insertSale->execute([$pid, $quantity]);
-
-    $pdo->commit();
-
-    echo json_encode([
-        'status' => 'success',
-        'pid' => $pid,
-        'named' => $named
-    ]);
-} catch (Throwable $e) {
-    if ($pdo->inTransaction()) {
-        $pdo->rollBack();
+    if ($named === '' || $plate_type === '' || $price === null || $quantity === null || $starts_at === '' || $ends_at === '') {
+        die('Missing required fields.');
     }
-    http_response_code(500);
-    echo json_encode(['status' => 'error', 'error' => 'Database error creating plate']);
+
+    // Convert HTML datetime-local ("2025-12-01T13:00") to MySQL DATETIME ("2025-12-01 13:00:00")
+    $starts_at_mysql = str_replace('T', ' ', $starts_at) . ':00';
+    $ends_at_mysql   = str_replace('T', ' ', $ends_at) . ':00';
+
+    try {
+        $pdo->beginTransaction();
+        $stmt = $pdo->prepare('
+            INSERT INTO Plates (mid, price, named, plate_type, described)
+            VALUES (:mid, :price, :named, :plate_type, :described)
+        ');
+        $stmt->execute([
+            ':mid'        => $mid,
+            ':price'      => $price,
+            ':named'      => $named,
+            ':plate_type' => $plate_type,
+            ':described'  => $described,
+        ]);
+
+        $pid = $pdo->lastInsertId();
+
+        $stmt2 = $pdo->prepare('
+            INSERT INTO On_Sale (pid, quantity, starts_at, ends_at)
+            VALUES (:pid, :quantity, :starts_at, :ends_at)
+        ');
+        $stmt2->execute([
+            ':pid'       => $pid,
+            ':quantity'  => $quantity,
+            ':starts_at' => $starts_at_mysql,
+            ':ends_at'   => $ends_at_mysql,
+        ]);
+
+        $pdo->commit();
+        header('Location: restaurant.php?created=1');
+        exit;
+    } catch (Exception $e) {
+        $pdo->rollBack();
+        die('Error creating plate: ' . $e->getMessage());
+    }
+} else {
+    header('Location: restaurant.php');
+    exit;
 }

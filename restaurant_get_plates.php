@@ -4,7 +4,7 @@ require_once __DIR__ . '/db.php';
 session_start();
 header('Content-Type: application/json');
 
-// Require logged-in restaurant
+
 if (empty($_SESSION['mid']) || ($_SESSION['user_type'] ?? '') !== 'restaurant') {
     http_response_code(403);
     echo json_encode(['status' => 'error', 'error' => 'Restaurant login required']);
@@ -14,7 +14,7 @@ if (empty($_SESSION['mid']) || ($_SESSION['user_type'] ?? '') !== 'restaurant') 
 $mid = (int)$_SESSION['mid'];
 
 try {
-    // Get all plates owned by this restaurant and their total on-sale quantity
+    
     $sql = '
         SELECT
             p.pid,
