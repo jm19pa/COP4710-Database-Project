@@ -92,7 +92,4 @@
   // Initialize tab by hash
   const initial = (location.hash||'#plates').slice(1);
   showTab(initial);
-  // Prefill current year
-  const y = new Date().getFullYear();
-  ['formCart','formPurchased'].forEach(id=>{ const f = document.getElementById(id); if(f) f.year.value=y; });
 })();
