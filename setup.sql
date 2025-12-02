@@ -51,8 +51,6 @@ CREATE TABLE On_Sale (
   pid         INT,
   quantity    INT NOT NULL,
   listed_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  available_from DATETIME NOT NULL,
-  available_until DATETIME NOT NULL,
   CONSTRAINT fk_on_sale_plate
     FOREIGN KEY (pid) REFERENCES Plates(pid)
       ON DELETE RESTRICT ON UPDATE RESTRICT,
@@ -123,6 +121,14 @@ BEGIN
 END;
 $$
 
+DELIMITER $$
+CREATE PROCEDURE Plates_Reserved(mid int)
+BEGIN
+	SELECT *
+    FROM Plates P, Reserved B
+    WHERE OS.quantity>0 AND P.pid = B.pid AND mid = B.mid;
+END;
+$$
 
 DELIMITER $$
 CREATE PROCEDURE Plates_Purchased()
