@@ -31,7 +31,7 @@
   function plateTable(headers, rows){
     let html = '<table class="table"><tr>' + headers.map(h=>`<th>${h}</th>`).join('') + '</tr>';
     for(const r of rows){
-      html += '<tr>' + r.map(c=>`<td>${c.named}</td><td>$${c.price}</td><td>${c.described}</td><td>${c.quantity}</td><td><button type="button" class="pickup" id="${c.pid}">Pick Up</td>`).join('') + '</tr>';
+      html += '<tr>' + `<td>${r[0]}</td><td>$${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><button type="button" class="pickup" id="${r[4]}">Pick Up</td>` + '</tr>';
     }
     html += '</table>';
     return html;
