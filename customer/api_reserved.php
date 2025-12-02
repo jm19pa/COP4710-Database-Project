@@ -8,7 +8,8 @@ if (empty($_SESSION['mid']) || ($_SESSION['user_type'] ?? '') !== 'customer') {
     exit;
 }
 $rows = [];
-$stmt = $pdo->prepare('CALL Plates_Reserved(?)');
+ini_set('display_errors', 1);
+$stmt = $pdo->prepare('SELECT P.named, P.price, P.described, B.quantity, P.pid FROM Plates P, Reserved B WHERE B.quantity>0 AND P.pid = B.pid AND ? = B.mid;');
 $stmt->execute([$_SESSION['mid']]);
 $rows = $stmt->fetchAll();
 
