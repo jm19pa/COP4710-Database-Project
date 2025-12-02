@@ -37,7 +37,20 @@ try {
         ":mid" => $mid
     ]);
 
-    header("Location: account.php?updated=1");
+    // Redirect back to previous page if provided
+    $returnTo = isset($_POST['return_to']) ? trim($_POST['return_to']) : '';
+
+    // Safety: only allow relative paths starting with '/' (no schema/host)
+    $isSafe = false;
+    if ($returnTo !== '') {
+        // Disallow CRLF and control characters
+        if (preg_match('/^[\x20-\x7E]+$/', $returnTo) === 1 && str_starts_with($returnTo, '/')) {
+            $isSafe = true;
+        }
+    }
+
+    $target = $isSafe ? $returnTo : '/index.html';
+    header("Location: $target", true, 302);
     exit;
 
 } catch (PDOException $e) {
