@@ -51,6 +51,8 @@ CREATE TABLE On_Sale (
   pid         INT,
   quantity    INT NOT NULL,
   listed_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  available_from DATETIME NOT NULL,
+  available_until DATETIME NOT NULL,
   CONSTRAINT fk_on_sale_plate
     FOREIGN KEY (pid) REFERENCES Plates(pid)
       ON DELETE RESTRICT ON UPDATE RESTRICT,
