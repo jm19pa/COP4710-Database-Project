@@ -1,0 +1,38 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>WNK Customer</title>
+  <link rel="stylesheet" href="customer.css"/>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h2>Waste Not Kitchen — Customer</h2>
+    <span id="customerBadge" class="badge">Checking session…</span>
+  </header>
+  <nav>
+    <a href="#plates" data-tab="plates" class="active">Plates</a>
+    <a href="#cart" data-tab="cart">Cart</a>
+    <a href="#reserved" data-tab="reserved">Plates reserved</a>
+  </nav>
+
+  <section id="pane-plates" class="card">
+    <form id="formPlates" class="inline">
+      <button type="submit">Run</button>
+    </form>
+    <div id="platesResult" class="card"></div>
+  </section>
+
+  <section id="pane-reserved" class="card" hidden>
+    <h3>Annual Purchase Report (Customer or Donor)</h3>
+    <form id="formReserved" class="inline">
+      <button type="submit">Run</button>
+    </form>
+    <div id="reservedResult" class="card"></div>
+  </section>
+</div>
+<script src="customer.js"></script>
+</body>
+</html>
