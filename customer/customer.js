@@ -38,7 +38,7 @@
   }
 
   // Helpers
-  function plateTable(headers, rows){
+  function reserveTable(headers, rows){
     let html = '<table class="table"><tr>' + headers.map(h=>`<th>${h}</th>`).join('') + '</tr>';
     for(const r of rows){
       html += '<tr>' + r.map(c=>`<td>${c.named}</td><td>$${c.price}</td><td>${c.described}</td><td>${c.quantity}</td><td><button type="button" class="pickup" id="${c.pid}">Reserve</td>`).join('') + '</tr>';
@@ -76,7 +76,7 @@
     const j = await res.json();
     if(j.status !== 'success'){ $('#reservedResult').innerHTML = `<div class="alert error">${j.error||'Error'}</div>`; return; }
     const rows = j.rows.map(r=>[r.named, r.price, r.described||'', r. quantity, r.pid]);
-    $('#platesResult').innerHTML = renderTable(['Plate','Price','Description','Quantity','Pick Up'], rows);
+    $('#platesResult').innerHTML = reserveTable(['Plate','Price','Description','Quantity','Pick Up'], rows);
     
     const buttons = document.querySelectorAll('.pickup');
     // Loop through the NodeList and add a click event listener to each button
