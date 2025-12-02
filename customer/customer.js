@@ -56,6 +56,16 @@
     if(j.status !== 'success'){ $('#platesResult').innerHTML = `<div class="alert error">${j.error||'Error'}</div>`; return; }
     const rows = j.rows.map(r=>[r.named, r.price, r.described||'', r. quantity, r.pid]);
     $('#platesResult').innerHTML = plateTable(['Plate','Price','Description','Quantity','Pick Up'], rows);
+    
+    const buttons = document.querySelectorAll('.reserve');
+    // Loop through the NodeList and add a click event listener to each button
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+          const url = new URL('api_reserve.php', location.href);
+          if(button.id) url.searchParams.set('pid', parseInt(button.id));
+          const res = fetch(url);
+        });
+    })
   });
 
   // Restaurant activity
@@ -67,6 +77,16 @@
     if(j.status !== 'success'){ $('#reservedResult').innerHTML = `<div class="alert error">${j.error||'Error'}</div>`; return; }
     const rows = j.rows.map(r=>[r.named, r.price, r.described||'', r. quantity, r.pid]);
     $('#platesResult').innerHTML = renderTable(['Plate','Price','Description','Quantity','Pick Up'], rows);
+    
+    const buttons = document.querySelectorAll('.pickup');
+    // Loop through the NodeList and add a click event listener to each button
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+          const url = new URL('api_pick_up.php', location.href);
+          if(button.id) url.searchParams.set('pid', parseInt(button.id));
+          const res = fetch(url);
+        });
+    })
   });
 
   // Initialize tab by hash
