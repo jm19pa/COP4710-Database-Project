@@ -2,7 +2,7 @@
 // restaurant_create_plate.php
 session_start();
 require_once '../db.php';    
-require_once '../auth_utils.php';
+require_once '../util/auth_utils.php';
 
 
 if (empty($_SESSION['mid']) || ($_SESSION['user_type'] ?? '') !== 'restaurant') {
@@ -24,11 +24,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $available_until  = $_POST['available_until'] ?? '';
 
     if ($named === '' || $plate_type === '' || $price === null || $quantity === null || $available_from === '' || $available_until === '') {
-        die('Missing required fields.');
+        http_response_code(400);
+        header('Content-Type: application/json');
+        echo json_encode(['status'=>'error','error'=>'Missing required fields.']);
+        exit;
     }
 
     if (strtotime($available_until) < strtotime($available_from)) {
-        die("Available Until cannot be before Available From.");
+        http_response_code(400);
+        header('Content-Type: application/json');
+        echo json_encode(['status'=>'error','error'=>'Available Until cannot be before Available From.']);
+        exit;
     }
 
     // Convert HTML datetime-local ("2025-12-01T13:00") to MySQL DATETIME ("2025-12-01 13:00:00")
@@ -63,13 +69,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
 
         $pdo->commit();
-        header('Location: restaurant.php?created=1');
+        header('Content-Type: application/json');
+        echo json_encode(['status'=>'success','pid'=>(int)$pid]);
         exit;
     } catch (Exception $e) {
         $pdo->rollBack();
-        die('Error creating plate: ' . $e->getMessage());
+        http_response_code(500);
+        header('Content-Type: application/json');
+        echo json_encode(['status'=>'error','error'=>'Error creating plate: '.$e->getMessage()]);
+        exit;
     }
 } else {
-    header('Location: restaurant.php');
+    http_response_code(405);
+    header('Content-Type: application/json');
+    echo json_encode(['status'=>'error','error'=>'Method Not Allowed']);
     exit;
 }

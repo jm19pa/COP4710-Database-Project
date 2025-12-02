@@ -49,24 +49,24 @@ try {
     $prev2 = $year - 2; // 2023
 
     // On_Sale across months for restaurants (2025 current year)
-    $insOS = $pdo->prepare('INSERT INTO On_Sale (pid, quantity, listed_at) VALUES (?,?,?)');
-    $insOS->execute([101,50,sprintf('%d-01-10 09:00:00',$year)]);
-    $insOS->execute([102,40,sprintf('%d-02-05 11:30:00',$year)]);
-    $insOS->execute([103,30,sprintf('%d-03-12 15:45:00',$year)]);
-    $insOS->execute([201,45,sprintf('%d-04-08 10:15:00',$year)]);
-    $insOS->execute([202,35,sprintf('%d-05-14 12:20:00',$year)]);
-    $insOS->execute([203,25,sprintf('%d-06-21 16:10:00',$year)]);
-    $insOS->execute([301,20,sprintf('%d-07-02 10:00:00',$year)]);
-    $insOS->execute([302,15,sprintf('%d-08-18 18:00:00',$year)]);
+    $insOS = $pdo->prepare('INSERT INTO On_Sale (pid, quantity, listed_at, available_from, available_until) VALUES (?,?,?,?,?)');
+    $ts = sprintf('%d-01-10 09:00:00',$year); $insOS->execute([101,50,$ts,$ts,date('Y-m-d H:i:s', strtotime($ts.' +90 days'))]);
+    $ts = sprintf('%d-02-05 11:30:00',$year); $insOS->execute([102,40,$ts,$ts,date('Y-m-d H:i:s', strtotime($ts.' +90 days'))]);
+    $ts = sprintf('%d-03-12 15:45:00',$year); $insOS->execute([103,30,$ts,$ts,date('Y-m-d H:i:s', strtotime($ts.' +90 days'))]);
+    $ts = sprintf('%d-04-08 10:15:00',$year); $insOS->execute([201,45,$ts,$ts,date('Y-m-d H:i:s', strtotime($ts.' +90 days'))]);
+    $ts = sprintf('%d-05-14 12:20:00',$year); $insOS->execute([202,35,$ts,$ts,date('Y-m-d H:i:s', strtotime($ts.' +90 days'))]);
+    $ts = sprintf('%d-06-21 16:10:00',$year); $insOS->execute([203,25,$ts,$ts,date('Y-m-d H:i:s', strtotime($ts.' +90 days'))]);
+    $ts = sprintf('%d-07-02 10:00:00',$year); $insOS->execute([301,20,$ts,$ts,date('Y-m-d H:i:s', strtotime($ts.' +90 days'))]);
+    $ts = sprintf('%d-08-18 18:00:00',$year); $insOS->execute([302,15,$ts,$ts,date('Y-m-d H:i:s', strtotime($ts.' +90 days'))]);
 
     // On_Sale in 2024
-    $insOS->execute([101,40,sprintf('%d-11-10 09:00:00',$prev)]);
-    $insOS->execute([201,30,sprintf('%d-09-08 10:15:00',$prev)]);
-    $insOS->execute([301,25,sprintf('%d-06-02 10:00:00',$prev)]);
+    $ts = sprintf('%d-11-10 09:00:00',$prev); $insOS->execute([101,40,$ts,$ts,date('Y-m-d H:i:s', strtotime($ts.' +90 days'))]);
+    $ts = sprintf('%d-09-08 10:15:00',$prev); $insOS->execute([201,30,$ts,$ts,date('Y-m-d H:i:s', strtotime($ts.' +90 days'))]);
+    $ts = sprintf('%d-06-02 10:00:00',$prev); $insOS->execute([301,25,$ts,$ts,date('Y-m-d H:i:s', strtotime($ts.' +90 days'))]);
 
     // On_Sale late 2023
-    $insOS->execute([102,20,sprintf('%d-12-05 11:30:00',$prev2)]);
-    $insOS->execute([202,18,sprintf('%d-12-14 12:20:00',$prev2)]);
+    $ts = sprintf('%d-12-05 11:30:00',$prev2); $insOS->execute([102,20,$ts,$ts,date('Y-m-d H:i:s', strtotime($ts.' +90 days'))]);
+    $ts = sprintf('%d-12-14 12:20:00',$prev2); $insOS->execute([202,18,$ts,$ts,date('Y-m-d H:i:s', strtotime($ts.' +90 days'))]);
 
     // Reserved (2025)
     $insR = $pdo->prepare('INSERT INTO Reserved (pid, mid, quantity, reserved_at) VALUES (?,?,?,?)');
