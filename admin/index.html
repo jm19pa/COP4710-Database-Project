@@ -76,7 +76,23 @@
     </form>
     <div id="donorTaxResult" class="card"><div class="alert info">Enter a donor MID and year to see donation summary.</div></div>
   </section>
+  <footer style="margin-top: 2rem; text-align: right;">
+    <a id="logoutLink" href="../auth/logout.php">Logout</a>
+  </footer>
 </div>
+<script>
+  (function(){
+    const link = document.getElementById('logoutLink');
+    if (link) {
+      link.addEventListener('click', function(e){
+        e.preventDefault();
+        fetch('../auth/logout.php', { method: 'GET' })
+          .catch(() => {})
+          .finally(() => { window.location.href = '/index.html'; });
+      });
+    }
+  })();
+</script>
 <script src="admin.js"></script>
 </body>
 </html>

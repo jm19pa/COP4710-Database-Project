@@ -265,12 +265,27 @@
           return;
         }
 
-        
-        if (data.user_type === "admin") {
-          // go to admin dashboard
-          window.location.href = "admin/index.html";
-        } else {
-          window.location.href = "index.html";
+        // role-based redirects
+        switch (data.user_type) {
+          case "admin":
+            // go to admin panel
+            window.location.href = "admin/index.html";
+            break;
+          case "donor":
+            window.location.href = "donor/index.html";
+            break;
+          case "customer":
+            window.location.href = "customer/index.html";
+            break;
+          case "needy":
+            window.location.href = "needy/index.html";
+            break;
+          case "restaurant":
+            window.location.href = "restaurant/index.html";
+            break;
+          default:
+            window.location.href = "index.html";
+            break;
         }
       } catch (err) {
         console.error(err);
