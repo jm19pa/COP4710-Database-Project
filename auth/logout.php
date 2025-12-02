@@ -18,5 +18,18 @@ if (ini_get('session.use_cookies')) {
     );
 }
 session_destroy();
-json_response(200, ['status' => 'success']);
+
+// If this was called via fetch/AJAX, return JSON; otherwise redirect.
+$accept = strtolower($_SERVER['HTTP_ACCEPT'] ?? '');
+$isAjax = (strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] ?? '') === 'xmlhttprequest')
+          || str_contains($accept, 'application/json')
+          || isset($_REQUEST['ajax']);
+
+if ($isAjax) {
+    json_response(200, ['status' => 'success']);
+    exit;
+}
+
+header('Location: /index.html', true, 302);
+exit;
 ?>
