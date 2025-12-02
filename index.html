@@ -239,6 +239,82 @@
         forms[targetId].classList.add("active");
       });
     });
+
+    
+    function showError(msg) {
+      alert(msg || "Something went wrong. Please try again.");
+    }
+
+    //redirect based on user type
+    document.getElementById("login-form").addEventListener("submit", async (e) => {
+      e.preventDefault(); // stop normal form submit
+
+      const form = e.target;
+      const formData = new FormData(form);
+
+      try {
+        const res = await fetch("auth/login.php", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await res.json();
+
+        if (data.status !== "success") {
+          showError(data.error || "Login failed");
+          return;
+        }
+
+        
+        if (data.user_type === "admin") {
+          // go to admin dashboard
+          window.location.href = "admin/index.html";
+        } else {
+          window.location.href = "index.html";
+        }
+      } catch (err) {
+        console.error(err);
+        showError("Network error. Is the server running?");
+      }
+    });
+
+    // --- REGISTER HANDLER (optional basic feedback) ---
+    // document.getElementById("register-form").addEventListener("submit", async (e) => {
+    //   e.preventDefault();
+
+    //   const form = e.target;
+    //   const formData = new FormData(form);
+
+    //   try {
+    //     const res = await fetch("auth/register.php", {
+    //       method: "POST",
+    //       body: formData,
+    //     });
+
+    //     const data = await res.json();
+
+    //     if (data.status !== "success") {
+    //       // collect validation errors from API and show them
+    //       if (data.errors) {
+    //         const msgs = Object.values(data.errors).join("\n");
+    //         showError(msgs);
+    //       } else {
+    //         showError(data.error || "Registration failed");
+    //       }
+    //       return;
+    //     }
+
+    //     alert("Registration successful! Please log in.");
+    //     // switch back to login tab
+    //     tabs.forEach((t) => t.classList.remove("active"));
+    //     tabs[0].classList.add("active"); // first tab = Login
+    //     forms["register-form"].classList.remove("active");
+    //     forms["login-form"].classList.add("active");
+    //   } catch (err) {
+    //     console.error(err);
+    //     showError("Network error. Is the server running?");
+    //   }
+    // });
   </script>
 </body>
 </html>
