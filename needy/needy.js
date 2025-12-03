@@ -54,6 +54,7 @@
           const url = new URL('api_pick_up.php', location.href);
           if(button.id) url.searchParams.set('pid', parseInt(button.id));
           const res = fetch(url);
+          alert("Item picked up successfully!");
         });
     })
   });
