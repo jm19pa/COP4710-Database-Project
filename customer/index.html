@@ -3,18 +3,17 @@
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>WNK Customer</title>
-  <link rel="stylesheet" href="customer.css"/>
+  <title>WNK Donor</title>
+  <link rel="stylesheet" href="donor.css"/>
 </head>
 <body>
 <div class="container">
   <header>
-    <h2>Waste Not Kitchen — Customer</h2>
-    <span id="customerBadge" class="badge">Checking session…</span>
+    <h2>Waste Not Kitchen — Donor</h2>
+    <span id="donorBadge" class="badge">Checking session…</span>
   </header>
   <nav>
     <a href="#plates" data-tab="plates" class="active">Plates</a>
-    <a href="#reserved" data-tab="reserved">Reserved</a>
   </nav>
 
   <section id="pane-plates" class="card">
@@ -24,19 +23,12 @@
     <div id="platesResult" class="card"></div>
   </section>
 
-  <section id="pane-reserved" class="card" hidden>
-    <form id="formReserved" class="inline">
-      <button type="submit">Run</button>
-    </form>
-    <div id="reservedResult" class="card"></div>
-  </section>
-
   <footer style="margin-top: 2rem; text-align: right;">
     <a id="accountLink" href="../account/index.html">Account</a>
     <span aria-hidden="true" style="margin: 0 0.5rem; color: #999;">|</span>
     <a id="logoutLink" href="../auth/logout.php">Logout</a>
   </footer>
-</div>
-<script src="customer.js"></script>
+
+<script src="donor.js"></script>
 </body>
 </html>
